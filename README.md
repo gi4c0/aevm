@@ -24,7 +24,7 @@ app.use(joiErrorHandler)
 app.listen(3000)
 ```
 
-__Now if you provide wrong data:__
+__Now if you provide bad data:__
 ```json
 {
   "email": "wrong_email",
@@ -32,13 +32,13 @@ __Now if you provide wrong data:__
 }
 ```
 
-It will response with the following error:
+__It will response with the following error__:
 ```json
 { "message": "\"email\" must be a valid email" }
 ```
 
 ## Settings:
-The default behaviour is passing { httpCode: 400, message: 'error messages' } to `next()` function. So you need to write your error handler middleware or just use the default `joiErrorHandler` which is nothing more then:
+The default behaviour is passing `{ httpCode: 400, message: 'error messages' }` to `next()` function. So you need to write your error handler middleware or just use the default `joiErrorHandler` which is nothing more then:
 ```js
 function (err, req, res, next) {
   if (process.env.NODE_ENV !== 'production') console.log(err)
