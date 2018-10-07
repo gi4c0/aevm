@@ -28,7 +28,7 @@ exports.validate = schema => (req, res, next) => {
   next()
 }
 
-exports.joiErrorHandler = (err, req, res, next) => {
+exports.defaultErrorHandler = (err, req, res, next) => {
   if (process.env.NODE_ENV !== 'production') console.log(err)
   res.status(err.httpCode || 500).json({ message: err.message })
 }

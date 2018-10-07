@@ -4,7 +4,7 @@
 ### Simple usecase
 ```js
 const Joi = require('joi')
-const { validate, joiErrorHandler } = require('joi-middleware')
+const { validate, defaultErrorHandler } = require('joi-middleware')
 
 const app = require('express')
 const router = app.Router()
@@ -20,7 +20,7 @@ router.post('/login', validate(schema), (req, res, next) => { /* You code here *
 
 app.use('/api', router)
 
-app.use(joiErrorHandler)
+app.use(defaultErrorHandler)
 app.listen(3000)
 ```
 
@@ -38,7 +38,7 @@ __It will response with the following error__:
 ```
 
 ## Settings:
-The default behaviour is passing `{ httpCode: 400, message: 'error messages' }` to `next()` function. So you need to write your error handler middleware or just use the default `joiErrorHandler` which is nothing more then:
+The default behaviour is passing `{ httpCode: 400, message: 'error messages' }` to `next()` function. So you need to write your error handler middleware or just use the default `defaultErrorHandler` which is nothing more then:
 ```js
 function (err, req, res, next) {
   if (process.env.NODE_ENV !== 'production') console.log(err)

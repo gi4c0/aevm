@@ -1,6 +1,6 @@
 {
   "name": "aevm",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Another Express Validator Middleware",
   "main": "index.js",
   "keywords": [
