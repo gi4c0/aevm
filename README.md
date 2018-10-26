@@ -4,7 +4,7 @@
 ### Simple usecase
 ```js
 const Joi = require('joi')
-const { validate, defaultErrorHandler } = require('joi-middleware')
+const { validate, defaultErrorHandler } = require('aevm')
 
 const app = require('express')
 const router = app.Router()
