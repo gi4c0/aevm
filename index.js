@@ -1,4 +1,5 @@
 const Joi = require('joi')
+const { merge } = require('lodash')
 
 /*
  * Extract error message from joi output
@@ -13,7 +14,7 @@ const getErrorMessage = (req, schema) => {
     message = result.error.details.map(d => d.message).join('. ')
   }
 
-  return message
+  return { message, value: result.value }
 }
 
 /*
@@ -22,11 +23,12 @@ const getErrorMessage = (req, schema) => {
  * @returns {(req, res, next) =>}
  */
 exports.validateWithResponse = schema => (req, res, next) => {
-  const message = getErrorMessage(req, schema)
+  const { message, value } = getErrorMessage(req, schema)
   if (message) {
     return res.status(400).json({ message })
   }
 
+  merge(req, value)
   next()
 }
 
@@ -36,11 +38,12 @@ exports.validateWithResponse = schema => (req, res, next) => {
  * @returns {(req, res, next) =>}
  */
 exports.validate = schema => (req, res, next) => {
-  const message = getErrorMessage(req, schema)
+  const { message, value } = getErrorMessage(req, schema)
   if (message) {
     return next({ httpCode: 400, message })
   }
 
+  merge(req, value)
   next()
 }
 
