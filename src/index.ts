@@ -1,5 +1,6 @@
-const Joi = require('joi')
-const { merge } = require('lodash')
+import Joi = require('joi')
+import { merge } from 'lodash'
+import { Request, Response, NextFunction, ErrorRequestHandler } from 'express'
 
 /*
  * Extract error message from joi output
@@ -7,7 +8,7 @@ const { merge } = require('lodash')
  * @param {object} schema - Joi schema object
  * @returns {string} Error message
  */
-const getErrorMessage = (req, schema) => {
+const getErrorMessage = (req: Request, schema: Joi.ObjectSchema) => {
   const result = Joi.validate(req, schema)
   let message = ''
   if (result.error) {
@@ -22,14 +23,16 @@ const getErrorMessage = (req, schema) => {
  * @param {object} schema - Joi schema
  * @returns {(req, res, next) =>}
  */
-exports.validateWithResponse = schema => (req, res, next) => {
-  const { message, value } = getErrorMessage(req, schema)
-  if (message) {
-    return res.status(400).json({ message })
-  }
+export const validateWithResponse = (schema: Joi.ObjectSchema) => {
+  return (req: Request, res: Response, next: NextFunction) => {
+    const { message, value } = getErrorMessage(req, schema)
+    if (message) {
+      return res.status(400).json({ message })
+    }
 
-  merge(req, value)
-  next()
+    merge(req, value)
+    next()
+  }
 }
 
 /*
@@ -37,20 +40,22 @@ exports.validateWithResponse = schema => (req, res, next) => {
  * @param {object} schema - Joi schema
  * @returns {(req, res, next) =>}
  */
-exports.validate = schema => (req, res, next) => {
-  const { message, value } = getErrorMessage(req, schema)
-  if (message) {
-    return next({ httpCode: 400, message })
-  }
+export const validate = (schema: Joi.ObjectSchema) => {
+  return (req: Request, res: Response, next: NextFunction) => {
+    const { message, value } = getErrorMessage(req, schema)
+    if (message) {
+      return next({ httpCode: 400, message })
+    }
 
-  merge(req, value)
-  next()
+    merge(req, value)
+    next()
+  }
 }
 
 /*
  * Error handler middleware for default responses from joi errors
  */
-exports.defaultErrorHandler = (err, req, res, next) => {
+export const defaultErrorHandler = (req: Request, res: Response, next: NextFunction, err) => {
   if (process.env.NODE_ENV !== 'production') console.log(err)
   res.status(err.httpCode || 500).json({ message: err.message })
 }
