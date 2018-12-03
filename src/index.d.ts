@@ -7,4 +7,4 @@ export function validate (schema: Joi.ObjectSchema): ExpressMiddleware
 
 export function validateWithResponse (schema: Joi.ObjectSchema): ExpressMiddleware
 
-export function defaultErrorHandler (req: Request, res: Response, next: NextFunction, err): void
+export function defaultErrorHandler (err, req: Request, res: Response, next: NextFunction): void

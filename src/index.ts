@@ -55,7 +55,7 @@ export const validate = (schema: Joi.ObjectSchema) => {
 /*
  * Error handler middleware for default responses from joi errors
  */
-export const defaultErrorHandler = (req: Request, res: Response, next: NextFunction, err) => {
+export const defaultErrorHandler = (err, req: Request, res: Response, next: NextFunction) => {
   if (process.env.NODE_ENV !== 'production') console.log(err)
   res.status(err.httpCode || 500).json({ message: err.message })
 }
