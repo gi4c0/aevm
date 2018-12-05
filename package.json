@@ -1,8 +1,9 @@
 {
   "name": "aevm",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Another Express Validator Middleware",
   "main": "./dist/index.js",
+  "homepage": "https://github.com/gi4c0/aevm",
 
   "scripts": {
     "build": "rm -rf ./dist && tsc && cp ./src/index.d.ts ./dist"
