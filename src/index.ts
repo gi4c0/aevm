@@ -2,6 +2,7 @@ import Joi = require('joi')
 import { merge } from 'lodash'
 import { Request, Response, NextFunction, ErrorRequestHandler } from 'express'
 
+// TODO: something
 /*
  * Extract error message from joi output
  * @param {object} req - The express request object
@@ -12,10 +13,12 @@ const getErrorMessage = (req: Request, schema: Joi.ObjectSchema) => {
   const result = Joi.validate(req, schema)
   let message = ''
   if (result.error) {
-    message = result.error.details.map(d => d.message).join('. ')
+    message = result.error.details
+      ? result.error.details.map(d => d.message).join('. ')
+      : result.error.message
   }
 
-  return { message, value: result.value }
+  return { message: message.replace(/"/g, "'"), value: result.value }
 }
 
 /*

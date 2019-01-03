@@ -6,9 +6,11 @@ const getErrorMessage = (req, schema) => {
     const result = Joi.validate(req, schema);
     let message = '';
     if (result.error) {
-        message = result.error.details.map(d => d.message).join('. ');
+        message = result.error.details
+            ? result.error.details.map(d => d.message).join('. ')
+            : result.error.message;
     }
-    return { message, value: result.value };
+    return { message: message.replace(/"/g, "'"), value: result.value };
 };
 exports.validateWithResponse = (schema) => {
     return (req, res, next) => {
