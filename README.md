@@ -34,7 +34,7 @@ __Now if you provide bad data:__
 
 __It will response with the following error__:
 ```json
-{ "message": "\"email\" must be a valid email" }
+{ "message": "'email' must be a valid email" }
 ```
 
 ## Settings:
