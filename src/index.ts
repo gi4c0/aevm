@@ -47,7 +47,7 @@ export const validate = (schema: Joi.ObjectSchema) => {
   return (req: Request, res: Response, next: NextFunction) => {
     const { message, value } = getErrorMessage(req, schema)
     if (message) {
-      return next({ httpCode: 400, message })
+      return next({ httpCode: 400, userMessage: message })
     }
 
     merge(req, value)
@@ -60,5 +60,5 @@ export const validate = (schema: Joi.ObjectSchema) => {
  */
 export const defaultErrorHandler = (err, req: Request, res: Response, next: NextFunction) => {
   if (process.env.NODE_ENV !== 'production') console.log(err)
-  res.status(err.httpCode || 500).json({ message: err.message })
+  res.status(err.httpCode || 500).json({ message: err.userMessage })
 }
