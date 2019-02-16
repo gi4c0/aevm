@@ -9,8 +9,8 @@ import { Request, Response, NextFunction, ErrorRequestHandler } from 'express'
  * @param {object} schema - Joi schema object
  * @returns {string} Error message
  */
-const getErrorMessage = (req: Request, schema: Joi.ObjectSchema) => {
-  const result = Joi.validate(req, schema)
+export const getErrorMessage = (req: Request, schema: IUserSchema) => {
+  const result = Joi.validate(req, Joi.object().keys(schema as any).unknown())
   let message = ''
   if (result.error) {
     message = result.error.details
@@ -21,12 +21,18 @@ const getErrorMessage = (req: Request, schema: Joi.ObjectSchema) => {
   return { message: message.replace(/"/g, "'"), value: result.value }
 }
 
+interface IUserSchema {
+  body?: Joi.ObjectSchema
+  query?: Joi.ObjectSchema
+  params?: Joi.ObjectSchema
+}
+
 /*
  * Take schema and returns express middleware which response with error
  * @param {object} schema - Joi schema
  * @returns {(req, res, next) =>}
  */
-export const validateWithResponse = (schema: Joi.ObjectSchema) => {
+export const validateWithResponse = (schema: IUserSchema) => {
   return (req: Request, res: Response, next: NextFunction) => {
     const { message, value } = getErrorMessage(req, schema)
     if (message) {
@@ -43,7 +49,7 @@ export const validateWithResponse = (schema: Joi.ObjectSchema) => {
  * @param {object} schema - Joi schema
  * @returns {(req, res, next) =>}
  */
-export const validate = (schema: Joi.ObjectSchema) => {
+export const validate = (schema: IUserSchema) => {
   return (req: Request, res: Response, next: NextFunction) => {
     const { message, value } = getErrorMessage(req, schema)
     if (message) {

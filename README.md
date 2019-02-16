@@ -9,12 +9,12 @@ const { validate, defaultErrorHandler } = require('aevm')
 const app = require('express')
 const router = app.Router()
 
-const schema = Joi.object().keys({
+const schema = {
   body: Joi.object().keys({
     email: Joi.string().email().required(),
     password: Joi.string().min(12).max(80).required()
   })
-}).unknown()
+}
 
 router.post('/login', validate(schema), (req, res, next) => { /* You code here */ })
 
