@@ -21,7 +21,7 @@ export const getErrorMessage = (req: Request, schema: IUserSchema) => {
   return { message: message.replace(/"/g, "'"), value: result.value }
 }
 
-interface IUserSchema {
+export interface IUserSchema {
   body?: Joi.ObjectSchema
   query?: Joi.ObjectSchema
   params?: Joi.ObjectSchema
