@@ -1,6 +1,6 @@
 {
   "name": "aevm",
-  "version": "2.0.2",
+  "version": "3.0.0",
   "description": "Another Express Validator Middleware",
   "main": "./dist/index.js",
   "homepage": "https://github.com/gi4c0/aevm",
@@ -15,8 +15,7 @@
   "author": "Alex Panch",
   "license": "MIT",
   "dependencies": {
-    "joi": "*",
-    "lodash": "^4.17.11"
+    "joi": "*"
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",

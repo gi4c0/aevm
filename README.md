@@ -12,7 +12,8 @@ const router = app.Router()
 const schema = {
   body: Joi.object().keys({
     email: Joi.string().email().required(),
-    password: Joi.string().min(12).max(80).required()
+    password: Joi.string().min(12).max(80).required(),
+    country: Joi.string().default('Ukraine')
   })
 }
 
@@ -37,8 +38,14 @@ __It will response with the following error__:
 { "message": "'email' must be a valid email" }
 ```
 
+__Default values__:
+Default values specified in schema would be placed in the request object
+```js
+console.log(req.body.country) // 'Ukraine'
+```
+
 ## Settings:
-The default behaviour is passing `{ httpCode: 400, userMessage: 'error messages' }` to `next()` function. So you need to write your error handler middleware or just use the default `defaultErrorHandler` which is nothing more then:
+The default behaviour is passing `{ httpCode: 400, userMessage: 'error messages' }` to `next()` function. So you need to write your own error handler middleware or just use the default `defaultErrorHandler` which is nothing more then:
 ```js
 function (err, req, res, next) {
   if (process.env.NODE_ENV !== 'production') console.log(err)
