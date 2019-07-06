@@ -3,11 +3,10 @@
     "module": "commonjs",
     "removeComments": true,
     "preserveConstEnums": true,
-    "allowJs": true,
     "target": "esnext",
+    "declaration": true,
     "rootDir": "src",
     "outDir": "dist",
-    "sourceMap": true,
     "moduleResolution": "node"
   },
 
