@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Joi = require("joi");
+const Joi = require("@hapi/joi");
 exports.getErrorMessage = (req, schema) => {
     const valuesToValidate = {
         body: req.body,
@@ -8,7 +8,7 @@ exports.getErrorMessage = (req, schema) => {
         params: req.params,
         headers: req.headers
     };
-    const result = Joi.validate(valuesToValidate, Joi.object().keys(schema).unknown());
+    const result = Joi.object().keys(schema).unknown().validate(valuesToValidate);
     let errorMessage = '';
     if (result.error) {
         errorMessage = result.error.details

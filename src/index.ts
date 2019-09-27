@@ -1,4 +1,4 @@
-import Joi = require('joi')
+import Joi = require('@hapi/joi')
 import { Request, Response, NextFunction } from 'express'
 
 /*
@@ -12,9 +12,8 @@ export const getErrorMessage = (req: Request, schema: IUserSchema) => {
     headers: req.headers
   }
 
-  const result = Joi.validate(
-    valuesToValidate,
-    Joi.object().keys(schema as any).unknown()
+  const result = Joi.object().keys(schema as any).unknown().validate(
+    valuesToValidate
   )
 
   let errorMessage = ''

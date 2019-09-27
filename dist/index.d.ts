@@ -1,5 +1,5 @@
 /// <reference types="node" />
-import Joi = require('joi');
+import Joi = require('@hapi/joi');
 import { Request, Response, NextFunction } from 'express';
 export declare const getErrorMessage: (req: Request, schema: IUserSchema) => {
     message: string;
