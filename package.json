@@ -1,12 +1,13 @@
 {
   "name": "aevm",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "description": "Another Express Validator Middleware",
   "main": "./dist/index.js",
   "homepage": "https://github.com/gi4c0/aevm",
   "scripts": {
     "build": "rm -rf ./dist && tsc",
-    "debug": "NODE_ENV=production node --inspect -r ts-node/register src/test.ts"
+    "debug": "NODE_ENV=production node --inspect -r ts-node/register src/test.ts",
+    "test": "NODE_ENV=uat npx mocha -r ts-node/register src/**/*.test.ts"
   },
   "keywords": [
     "joi",
@@ -19,12 +20,15 @@
     "@hapi/joi": "^16.1.4"
   },
   "devDependencies": {
-    "@types/chai": "^4.1.7",
+    "@types/chai": "^4.2.4",
+    "@types/chai-as-promised": "^7.1.2",
     "@types/express": "^4.16.0",
     "@types/hapi__joi": "^15.0.4",
-    "@types/mocha": "^5.2.6",
+    "@types/mocha": "^5.2.7",
     "@types/node": "^10.12.11",
+    "@types/sinon": "^7.5.0",
     "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
     "eslint": "^5.6.1",
     "eslint-config-standard": "^12.0.0",
     "eslint-plugin-import": "^2.14.0",
@@ -32,6 +36,9 @@
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-standard": "^4.0.0",
     "mocha": "^5.2.0",
+    "sinon": "^7.5.0",
+    "ts-mock-imports": "^1.2.6",
+    "ts-node": "^8.4.1",
     "tslint": "^5.11.0",
     "tslint-config-standard": "^8.0.1",
     "typescript": "^3.2.1"

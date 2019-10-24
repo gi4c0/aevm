@@ -1,0 +1,89 @@
+* Another Joi validator middleware
+** Motivation
+    I tired of writing the same code over and over again with validation middlewares for each new project. So I wrote this little package to not repeat myself.
+    The idea is quite simple: it just takes you Joi schema and returns an express middleware that validates it against the data from request object
+
+** Getting started
+*** Simple usecase
+    #+begin_src javascript
+      const Joi = require('joi')
+      const { validate, defaultErrorHandler } = require('aevm')
+
+      const app = require('express')
+      const router = app.Router()
+
+      const schema = {
+        body: Joi.object().keys({
+          email: Joi.string().email().required(),
+          password: Joi.string().min(12).max(80).required(),
+          country: Joi.string().default('Ukraine')
+        })
+      }
+
+      router.post('/login', validate(schema), (req, res, next) => { /* You code here */ })
+
+      app.use('/api', router)
+
+      app.use((err, req, res, next) => {
+        res.status(err.httpCode || 500).json({ message: err.message })
+      })
+
+      app.listen(3000)
+    #+end_src
+
+    Now if you provide bad data:
+    #+begin_src json
+
+      {
+        "email": "wrong_email",
+        "password": "tooshort"
+      }
+    #+end_src
+
+    It will response with the following error:
+    #+begin_src json
+      { "message": "'email' must be a valid email" }
+    #+end_src
+
+    Default values specified in schema would be placed in the request object
+    #+begin_src javascript
+      console.log(req.body.country) // 'Ukraine'
+    #+end_src
+
+** API
+*** Schema
+    Any validation schema in this package must have the following structure:
+    #+begin_src typescript
+      interface IUserSchema {
+        body?: Joi.ObjectSchema
+        query?: Joi.ObjectSchema
+        params?: Joi.ObjectSchema
+        headers?: Joi.ObjectSchema
+      }
+    #+end_src
+
+    So basically it's an object with possible keys ~body~, ~query~, ~params~, ~headers~ with values of Joi.object().keys()
+    Obviously at least one key is required
+*** validate(validationSchema)
+    Takes an object with keys ~body~, ~query~, ~params~, ~headers~ and values Joi.object().keys() and returns an express middleware that will validate the data and pass an error to next() function if there is any
+    Error would be { httpCode: number, message: string }.
+*** paramId(paramName: string)
+    Takes a string and creates a schema with a single validation numeric field for the ~req.params~ object and returns an express validation middleware
+    Could be usefull for when you need to validate an id from url like ~GET /users/:userId~
+*** queryId(paramName: string)
+    Takes a string and creates a schema with a single validation numeric field for the ~req.query~ object and returns an express validation middleware
+*** queryString(paramName: string)
+    Takes a string and creates a schema with a single validation string field for the ~req.query~ object and returns an express validation middleware
+*** getErrorMessage(req, schema)
+    Takes a ~req~ object and schema and returns error message with default values for custom validation middleware
+    =Returned values=:
+    #+begin_src javascript
+      {
+        message: 'you error message or empty string',
+        values: { /* Object with data from your schema populated with defualt values */ }
+      }
+    #+end_src
+*** validateWithResponse(schema)
+    Takes schema and returns an express middleware that would automatically response with error code 400 end message in JSON like ~{ "message": "your error" }~
+*** defaultErrorHandler (DEPRECATED)
+    The default error handler that could be used to respond with error from middleware that came from ~validate~ method

@@ -42,6 +42,45 @@ export const validate = (schema: IUserSchema) => {
   }
 }
 
+/**
+ * Create validation for a single numeric parameter id like /users/:userId
+ */
+export const paramId = (paramName: string) => {
+  const schema = {
+    params: Joi.object().keys({
+      [paramName]: Joi.number().required()
+    }).required().unknown()
+  }
+
+  return validate(schema)
+}
+
+/**
+ * Create validation for a single query parameter id like ?queryParam=
+ */
+export const queryId = (queryParamName: string) => {
+  const schema = {
+    query: Joi.object().keys({
+      [queryParamName]: Joi.number().required()
+    }).required().unknown()
+  }
+
+  return validate(schema)
+}
+
+/**
+ * Create validation for a single query string parameter like ?queryParam=
+ */
+export const queryString = (queryParamName: string) => {
+  const schema = {
+    query: Joi.object().keys({
+      [queryParamName]: Joi.string().required()
+    }).required().unknown()
+  }
+
+  return validate(schema)
+}
+
 export interface IUserSchema {
   body?: Joi.ObjectSchema
   query?: Joi.ObjectSchema
@@ -67,7 +106,7 @@ export const validateWithResponse = (schema: IUserSchema) => {
 /*
  * Error handler middleware for default responses from joi errors
  */
-export const defaultErrorHandler = (err, req: Request, res: Response, next: NextFunction) => {
+export const defaultErrorHandler = (err, req: Request, res: Response, _) => {
   if (process.env.NODE_ENV !== 'production') console.log(err)
   res.status(err.httpCode || 500).json({ message: err.userMessage || err.message })
 }
