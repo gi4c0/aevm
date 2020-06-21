@@ -1,6 +1,6 @@
 {
   "name": "aevm",
-  "version": "4.1.1",
+  "version": "4.1.2",
   "description": "Another Express Validator Middleware",
   "main": "./dist/index.js",
   "homepage": "https://github.com/gi4c0/aevm",
